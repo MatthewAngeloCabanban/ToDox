@@ -1,0 +1,63 @@
+// Create a migration for users table
+Schema::create('users', function (Blueprint $table) {
+    $table->id();
+    $table->string('username');
+    $table->string('password');
+    $table->string('email');
+    $table->timestamps();
+});
+
+// Create a migration for tasks table
+Schema::create('tasks', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->string('title');
+    $table->text('description');
+    $table->timestamps();
+});
+
+<?php
+
+// Simulate running migrations
+echo "Migrating users table...\n";
+echo "Migrating tasks table...\n";
+
+// User model
+class User extends Model {
+    protected $fillable = ['username', 'password', 'email'];
+    
+    public function tasks() {
+        return $this->hasMany(Task::class);
+    }
+}
+
+// Task model
+class Task extends Model {
+    protected $fillable = ['title', 'description', 'user_id'];
+    
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+}
+
+<?php
+
+// Simulate model usage
+$user = new User();
+$user->username = 'john_doe';
+$user->password = 'password123';
+$user->email = 'john@example.com';
+$user->save();
+
+$task = new Task();
+$task->title = 'Complete Laravel project';
+$task->description = 'Finish all tasks for the Laravel project';
+$task->user_id = $user->id;
+$task->save();
+
+// Retrieve tasks for a user
+$userTasks = $user->tasks;
+foreach ($userTasks as $task) {
+    echo "Task: {$task->title}\n";
+    echo "Description: {$task->description}\n";
+}
