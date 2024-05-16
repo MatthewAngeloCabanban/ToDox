@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use App\Models\Task;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Route;
+
+// Models
+// ... (User and Task models - unchanged)
+
+// Controllers
+// ... (UserController and TaskController - unchanged)
+
+// Routes
+Route::get('/migrate', function () {
+    // ... (migration code - unchanged)
+});
+
+Route::resource('users', UserController::class);
+Route::resource('tasks', TaskController::class);
+
+// Improved Test Route for Laravel Playground
+Route::get('/', function () {
+    // Create User (only if it doesn't exist)
+    if (!User::where('username', 'john_doe')->exists()) {
+        $user = User::create([
+            'username' => 'john_doe',
+            'password' => 'password123',
+            'email' => 'john@example.com'
+        ]);
+
+        // Create Tasks for the User
+        $user->tasks()->createMany([
+            ['title' => 'Complete Laravel project', 'description' => 'Finish all tasks for the Laravel project'],
+            ['title' => 'Learn Eloquent ORM', 'description' => 'Deep dive into Eloquent'],
+        ]);
+    }
+
+    // Fetch and Display All Users with Their Tasks
+    $users = User::with('tasks')->get();
+    return response()->json($users); // Return JSON for easier viewing in Playground
+});
