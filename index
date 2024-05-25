@@ -1,0 +1,19 @@
+<?php
+// index.php 
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\TasksController;
+use App\Http\Controllers\UsersController;
+use Illuminate\Support\Facades\Route;
+
+// Migrations
+Route::get('/migrate', function () {
+    // ... (migration code - unchanged)
+});
+
+// Resource Controllers
+Route::resource('posts', PostController::class);
+Route::resource('users', UsersController::class);
+Route::resource('tasks', TasksController::class);
+
+// Test Route for the PostController
+Route::get('/', [PostController::class, 'index']); // Show all posts on the homepage
