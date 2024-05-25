@@ -1,0 +1,9 @@
+<?php // app/Http/Controllers/PostController.php
+namespace App\Http\Controllers\PostController.php;
+
+// ... (use App\Models\Post, etc.)
+
+class PostController extends Controller
+{
+    // ... (your controller methods)
+}
