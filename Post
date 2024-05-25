@@ -1,0 +1,7 @@
+<?php // app/Models/Post.php
+namespace App\Models\Post.php;
+
+/lass Post extends Model
+{
+ 
+}
